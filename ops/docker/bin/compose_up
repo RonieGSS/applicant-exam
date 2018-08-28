@@ -21,6 +21,12 @@ do
 	fi
 done
 
+if [[ $(docker volume ls | grep 'docker_mysql_php_data') ]];
+then
+	echo "Deleting container volume..."
+	docker volume rm docker_mysql_php_data
+fi
+
 # build php image
 bash ops/docker/bin/build_image
 docker-compose -f ops/docker/docker-compose.yml up --build -d
