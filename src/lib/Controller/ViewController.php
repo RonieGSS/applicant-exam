@@ -2,6 +2,10 @@
 
 namespace Lib\Controller;
 
+/**
+ * Responsible for view templates
+ *
+ */
 class ViewController
 {
 	/**
