@@ -1,8 +1,10 @@
-<?php
+<?php declare(strict_types=1);
+
+require_once('layout.php');
 
 use Lib\Controller\RoutesController;
 
-$router = new RoutesController();
+$router = new RoutesController($viewTemplateSetting);
 
 /**
  * You can set your routes in this page

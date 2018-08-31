@@ -14,6 +14,16 @@ class RoutesController
 	private $route = [];
 
 	/**
+	 * @var Lib\Controller\ViewController object
+	 */
+	private $viewTemplateSetting;
+
+	public function __construct(ViewController $viewTemplateSetting)
+	{
+		$this->viewTemplateSetting = $viewTemplateSetting;
+	}
+
+	/**
 	 * Add routes
 	 *
 	 * @param $url string the route url to add
@@ -33,14 +43,15 @@ class RoutesController
 	 */
 	public function requireRoute(string $url)
 	{
+		require_once("app/View/Common/{$this->viewTemplateSetting->getHeader()}");
 		if (isset($this->route[$url])) {
-			require_once('app/View/Common/header.php');
 			require_once('app/View' . $this->route[$url] . '.php');
-			require_once('app/View/Common/footer.php');
 		} else {
-			echo '<h2>404 PAGE NOT FOUND :)</h2>'.
-				 '<h4>Check app/Config/routes.php file</h4>';
-			die();
+			echo '<div class="col-md-4 offset-md-4 text-center">
+				  <h2>WAZZAP MAN!!!</h2>
+				  <h2>404 PAGE NOT FOUND YOW</h2>'.
+				 '<h4>Check app/Config/routes.php file</h4></div>';
 		}
+		require_once("app/View/Common/{$this->viewTemplateSetting->getFooter()}");
 	}
 }
