@@ -30,6 +30,11 @@ class RoutesController
 	private $controller_dir = 'app/Controller/';
 
 	/**
+	 * @var template_dir string, directory of view templates
+	 */
+	private $template_dir = 'app/View/Common';
+
+	/**
 	 * @var Lib\Controller\ViewController object
 	 */
 	private $viewTemplateSetting;
@@ -116,17 +121,24 @@ class RoutesController
 	 */
 	public function addRoute(array $route, string $filepath = null)
 	{
-		$url = $route['url'];
-		if (!$route['controller']) {
-			$this->route[$url] = (preg_match('/\/$/', $url)) ? 
-							 $url.$filepath : ($filepath) ? 
-							 			  "/{$filepath}" : $url;
-		} else if ($route['controller'] && $route['action']) {
-			$this->route[$url] = ($filepath) ? "/{$route['controller']}/{$filepath}"
-								 			  : "/{$route['controller']}/{$route['action']}";
-		} else {
-			echo '<h3 class="text-center">Route URL, Controller and Action are required!</h3>';
-			die();
+		try {
+			$url = $route['url'];
+			if (!$route['controller']) {
+				$this->route[$url] = (preg_match('/\/$/', $url)) ? 
+								 $url.$filepath : ($filepath) ? 
+								 			  "/{$filepath}" : $url;
+			} else if ($route['controller'] && $route['action']) {
+				$this->route[$url] = ($filepath) ? "/{$route['controller']}/{$filepath}"
+									 			  : "/{$route['controller']}/{$route['action']}";
+			} else {
+				require_once("{$this->template_dir}/{$this->viewTemplateSetting->getHeader()}");
+				echo '<h3 class="text-center">Route URL, Controller and Action are required!</h3>
+					<h4 class="text-center">Check app/Config/routes.php file</h4>';
+				require_once("{$this->template_dir}/{$this->viewTemplateSetting->getFooter()}");
+				die();
+			}
+		} catch (Exception $e) {
+			echo '<h3>Oh man got this error -> </h3>' . $e->getMessage();
 		}
 	}
 
@@ -137,25 +149,29 @@ class RoutesController
 	 */
 	public function requireRoute(string $url)
 	{
-		require_once("app/View/Common/{$this->viewTemplateSetting->getHeader()}");
-		if (preg_match('/\/$/', $url) && strlen($url) > 1) {
-			$url = rtrim($url, "/");
-		}
-		if (isset($this->route[$url])) {
-			$file = 'app/View' . $this->route[$url] . '.php';
-			if (file_exists($file)) {
-				require_once($file);
-			} else {
-				echo '<h3 class="text-center">File '. $file . 
-				' does not exist man. Create one if you like!</h3>';
+		try {
+			require_once("{$this->template_dir}/{$this->viewTemplateSetting->getHeader()}");
+			if (preg_match('/\/$/', $url) && strlen($url) > 1) {
+				$url = rtrim($url, "/");
 			}
-		} else {
-			echo '<div class="col-md-4 offset-md-4 text-center">'.
-				  '<h2>WAZZAP MAN!!!</h2>'.
-				  '<h4>URL '.$url.' is invalid</h4>'.
-				  '<h2>404 PAGE NOT FOUND YOW</h2>'.
-				 '<h4>Check app/Config/routes.php file</h4></div>';
+			if (isset($this->route[$url])) {
+				$file = 'app/View' . $this->route[$url] . '.php';
+				if (file_exists($file)) {
+					require_once($file);
+				} else {
+					echo '<h3 class="text-center">File '. $file . 
+					' does not exist man. Create one if you like!</h3>';
+				}
+			} else {
+				echo '<div class="col-md-4 offset-md-4 text-center">'.
+					  '<h2>WAZZAP MAN!!!</h2>'.
+					  '<h4>URL '.$url.' is invalid</h4>'.
+					  '<h2>404 PAGE NOT FOUND YOW</h2>'.
+					 '<h4>Check app/Config/routes.php file</h4></div>';
+			}
+			require_once("{$this->template_dir}/{$this->viewTemplateSetting->getFooter()}");
+		} catch (Exception $e) {
+			echo '<h3>Oh man got this error -> </h3>' . $e->getMessage();
 		}
-		require_once("app/View/Common/{$this->viewTemplateSetting->getFooter()}");
 	}
 }
