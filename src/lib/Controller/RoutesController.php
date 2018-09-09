@@ -124,11 +124,11 @@ class RoutesController
 			$url = $route['url'];
 			if (!$route['controller']) {
 				$this->route[$url] = (preg_match('/\/$/', $url)) ? 
-								 $url.$filepath : ($filepath) ? 
-								 			  "/{$filepath}" : $url;
+								 	  $url.$filepath : ($filepath) ? 
+								 	  "/{$filepath}" : $url;
 			} else if ($route['controller'] && $route['action']) {
 				$this->route[$url] = ($filepath) ? "/{$route['controller']}/{$filepath}"
-									 			  : "/{$route['controller']}/{$route['action']}";
+									 			 : "/{$route['controller']}/{$route['action']}";
 			} else {
 				require_once("{$this->template_dir}/{$this->view_template_setting->getHeader()}");
 				echo '<h3 class="text-center">Route URL, Controller and Action are required!</h3>
@@ -154,11 +154,11 @@ class RoutesController
 				$url = rtrim($url, "/");
 			}
 			if (isset($this->route[$url])) {
-				$file = 'app/View' . $this->route[$url] . '.php';
-				if (file_exists($file)) {
-					require_once($file);
+				$view_file = 'app/View' . $this->route[$url] . '.php';
+				if (file_exists($view_file)) {
+					require_once($view_file);
 				} else {
-					echo '<h3 class="text-center">File '. $file . 
+					echo '<h3 class="text-center">File '. $view_file . 
 					' does not exist man. Create one if you like!</h3>';
 				}
 			} else {
