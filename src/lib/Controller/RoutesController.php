@@ -111,14 +111,23 @@ class RoutesController
 	/**
 	 * Add routes
 	 *
-	 * @param $url string the route url to add
-	 * @param $view string the view page to request for a given route
+	 * @param $route array the route config to add
+	 * @param $filepath string the mandatory file path to find
 	 */
-	public function addRoute(string $url, string $view = 'index')
+	public function addRoute(array $route, string $filepath = null)
 	{
-		$this->route[$url] = (preg_match('/\/$/', $url)) ? 
-							 $url.$view : ($view != 'index') ? 
-							 			  "/{$view}" : $url;
+		$url = $route['url'];
+		if (!$route['controller']) {
+			$this->route[$url] = (preg_match('/\/$/', $url)) ? 
+							 $url.$filepath : ($filepath) ? 
+							 			  "/{$filepath}" : $url;
+		} else if ($route['controller'] && $route['action']) {
+			$this->route[$url] = ($filepath) ? "/{$route['controller']}/{$filepath}"
+								 			  : "/{$route['controller']}/{$route['action']}";
+		} else {
+			echo '<h3 class="text-center">Route URL, Controller and Action are required!</h3>';
+			die();
+		}
 	}
 
 	/**

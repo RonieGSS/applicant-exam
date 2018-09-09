@@ -10,15 +10,19 @@ $router = new RoutesController($viewTemplateSetting);
  * You can set your routes in this page
  *
  * addRoute method can accept one or two parameters
- * $router->addRoute($url, $view = 'index');
- * @param $url route url, the first parameter is required
- * @param $view view page name, the second parameter is optional
- * and assigned if routeUrl is different form view page name
+ * $router->addRoute($route, $filepath = null);
+ * @param $route route config, the first parameter is required
+ * @param $filepath view page name, the second parameter is optional
+ * and assigned if route config's action is different form view page name
+ * 
+ * Note*: If using controller class and action with $filepath declared,
+ * make sure filepath is complete like 'Users/index' which points to
+ * -> app/View/Users/index.php
  */
-// $url is different different from $view so second parameter is needed
+// $route['url'] is different from $filepath so second parameter is necessary
 // points to app/View/home.php
-$router->addRoute('/', 'home');
+$router->addRoute(['url' => '/', 'controller' => null, 'action' => null], 'home');
 
-// $url is the same as $view so second parameter is unnecessary
+// $route['url'] is the same as $filepath so second parameter is unnecessary
 // points to app/View/about.php
-$router->addRoute('/about');
+$router->addRoute(['url' => '/about', 'controller' => null, 'action' => null]);

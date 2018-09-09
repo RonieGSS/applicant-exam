@@ -5,5 +5,9 @@ namespace App\Controller;
 class UsersController
 {
 	// Start Coding!
+	public function index()
+	{
+		
+	}
 
 }
