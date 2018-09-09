@@ -43,7 +43,6 @@ class RoutesController
 	{
 		$this->view_template_setting = $view_template_setting;
 		$this->setCreatedControllers();
-		$this->setCreatedActions();
 	}
 
 	/**
@@ -60,7 +59,9 @@ class RoutesController
 				if ($dir = opendir($this->controller_dir)) {
 					while(($file = readdir($dir)) !== false) {
 						if (!preg_match('/^\.+/',$file)) {
-							$this->controllers[] = strtolower(str_replace('Controller.php','',$file));
+							$controller = strtolower(str_replace('Controller.php','',$file));
+							$this->setCreatedActions($controller);
+							$this->controllers[] = $controller;
 						} // end of innermost if statement
 					} // end of while loop
 				} // end of inner if statement
@@ -75,26 +76,24 @@ class RoutesController
 	 * in app/Controller directory to actions array
 	 * with controller name as key
 	 *
-	 * @param null
+	 * @param $controller string, lowercased name of controller
 	 * @return null
 	 */
-	private function setCreatedActions()
+	private function setCreatedActions(string $controller)
 	{
 		try {
-			foreach ($this->controllers as $controller) {
-				$file_to_open = $this->controller_dir . ucfirst($controller) . 'Controller.php';
-				$file_to_read = fopen($file_to_open, "r") or die('Unable to open file');
-				$file = htmlentities(fread($file_to_read, filesize($file_to_open)));
-				preg_match_all('/public function .+(?='. preg_quote('(').')/', $file, $matches);
-				foreach ($matches[0] as $match) {
-					$action = trim(str_replace('public function ', '', $match));
-					if ($action != '__construct') {
-						$this->actions[$controller][] = $action;
-						$this->setPrimaryRoutes($controller, $action);
-					}
-				} // end of inner foreach lopp
-				fclose($file_to_read);
-			} // end of outer foreach loop
+			$file_to_open = $this->controller_dir . ucfirst($controller) . 'Controller.php';
+			$file_to_read = fopen($file_to_open, "r") or die('Unable to open file');
+			$file = htmlentities(fread($file_to_read, filesize($file_to_open)));
+			preg_match_all('/public function .+(?='. preg_quote('(').')/', $file, $matches);
+			foreach ($matches[0] as $match) {
+				$action = trim(str_replace('public function ', '', $match));
+				if ($action != '__construct') {
+					$this->actions[$controller][] = $action;
+					$this->setPrimaryRoutes($controller, $action);
+				}
+			} // end of inner foreach lopp
+			fclose($file_to_read);
 		} catch (Exception $e) {
 			echo '<h3>Oh man got this error -> </h3>' . $e->getMessage();
 		}
