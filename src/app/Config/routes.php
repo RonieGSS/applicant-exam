@@ -4,7 +4,7 @@ require_once('layout.php');
 
 use Lib\Controller\RoutesController;
 
-$router = new RoutesController($viewTemplateSetting);
+$router = new RoutesController($view_template_setting);
 
 /**
  * You can set your routes in this page

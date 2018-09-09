@@ -8,17 +8,17 @@ class UsersModel extends TableModel
 
 	/**
 	 * Contains database connection
-	 * @var dbConn PDO Object
+	 * @var db_conn PDO Object
 	 */
-	private $dbConn;
+	private $db_conn;
 
 	public function __construct()
 	{
-		$this->dbConn = $this->conn();
+		$this->db_conn = $this->conn();
 	}
 
 	public function getConn()
 	{
-		return $this->dbConn;
+		return $this->db_conn;
 	}
 }

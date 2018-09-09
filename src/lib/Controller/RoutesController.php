@@ -37,11 +37,11 @@ class RoutesController
 	/**
 	 * @var Lib\Controller\ViewController object
 	 */
-	private $viewTemplateSetting;
+	private $view_template_setting;
 
-	public function __construct(ViewController $viewTemplateSetting)
+	public function __construct(ViewController $view_template_setting)
 	{
-		$this->viewTemplateSetting = $viewTemplateSetting;
+		$this->view_template_setting = $view_template_setting;
 		$this->setCreatedControllers();
 		$this->setCreatedActions();
 	}
@@ -131,10 +131,10 @@ class RoutesController
 				$this->route[$url] = ($filepath) ? "/{$route['controller']}/{$filepath}"
 									 			  : "/{$route['controller']}/{$route['action']}";
 			} else {
-				require_once("{$this->template_dir}/{$this->viewTemplateSetting->getHeader()}");
+				require_once("{$this->template_dir}/{$this->view_template_setting->getHeader()}");
 				echo '<h3 class="text-center">Route URL, Controller and Action are required!</h3>
 					<h4 class="text-center">Check app/Config/routes.php file</h4>';
-				require_once("{$this->template_dir}/{$this->viewTemplateSetting->getFooter()}");
+				require_once("{$this->template_dir}/{$this->view_template_setting->getFooter()}");
 				die();
 			}
 		} catch (Exception $e) {
@@ -150,7 +150,7 @@ class RoutesController
 	public function requireRoute(string $url)
 	{
 		try {
-			require_once("{$this->template_dir}/{$this->viewTemplateSetting->getHeader()}");
+			require_once("{$this->template_dir}/{$this->view_template_setting->getHeader()}");
 			if (preg_match('/\/$/', $url) && strlen($url) > 1) {
 				$url = rtrim($url, "/");
 			}
@@ -169,7 +169,7 @@ class RoutesController
 					  '<h2>404 PAGE NOT FOUND YOW</h2>'.
 					 '<h4>Check app/Config/routes.php file</h4></div>';
 			}
-			require_once("{$this->template_dir}/{$this->viewTemplateSetting->getFooter()}");
+			require_once("{$this->template_dir}/{$this->view_template_setting->getFooter()}");
 		} catch (Exception $e) {
 			echo '<h3>Oh man got this error -> </h3>' . $e->getMessage();
 		}

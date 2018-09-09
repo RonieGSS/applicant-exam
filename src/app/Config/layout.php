@@ -2,20 +2,20 @@
 
 use Lib\Controller\ViewController;
 
-$viewTemplateSetting = new ViewController();
+$view_template_setting = new ViewController();
 
 /**
  * The current header can be found at app/View/Common/header.php
  * You can set customized header
- * (ex. $viewTemplateSetting->setHeader(myheader.php);)
+ * (ex. $view_template_setting->setHeader(myheader.php);)
  */
-$viewTemplateSetting->setHeader();
+$view_template_setting->setHeader();
 
 /**
  * The current footer can be found at app/View/Common/footer.php
  * You can set customized footer
- * (ex. $viewTemplateSetting->setFooter(myfooter.php);)
+ * (ex. $view_template_setting->setFooter(myfooter.php);)
  */
-$viewTemplateSetting->setFooter();
+$view_template_setting->setFooter();
 
 
