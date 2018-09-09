@@ -84,8 +84,8 @@ class RoutesController
 		try {
 			$file_to_open = $this->controller_dir . ucfirst($controller) . 'Controller.php';
 			$file_to_read = fopen($file_to_open, "r") or die('Unable to open file');
-			$file = htmlentities(fread($file_to_read, filesize($file_to_open)));
-			preg_match_all('/public function .+(?='. preg_quote('(').')/', $file, $matches);
+			$read_file = htmlentities(fread($file_to_read, filesize($file_to_open)));
+			preg_match_all('/public function .+(?='. preg_quote('(').')/', $read_file, $matches);
 			foreach ($matches[0] as $match) {
 				$action = trim(str_replace('public function ', '', $match));
 				if ($action != '__construct') {
