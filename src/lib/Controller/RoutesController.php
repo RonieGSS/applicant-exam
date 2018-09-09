@@ -82,7 +82,10 @@ class RoutesController
 				$file = htmlentities(fread($file_to_read, filesize($file_to_open)));
 				preg_match_all('/public function .+(?='. preg_quote('(').')/', $file, $matches);
 				foreach ($matches[0] as $match) {
-					$this->actions[$controller][] = trim(str_replace('public function ', '', $match));
+					$action = trim(str_replace('public function ', '', $match));
+					if ($action != '__construct') {
+						$this->actions[$controller][] = $action;
+					}
 				} // end of inner foreach lopp
 				fclose($file_to_read);
 			} // end of outer foreach loop
