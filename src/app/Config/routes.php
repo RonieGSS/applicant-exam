@@ -13,7 +13,7 @@ $router = new RoutesController($viewTemplateSetting);
  * $router->addRoute($route, $filepath = null);
  * @param $route route config, the first parameter is required
  * @param $filepath view page name, the second parameter is optional
- * and assigned if route config's action is different form view page name
+ * and assigned if route config's action name is different form view filename
  * 
  * Note*: If using controller class and action with $filepath declared,
  * make sure filepath is complete like 'Users/index' which points to
