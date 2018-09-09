@@ -5,4 +5,5 @@ namespace App\Controller;
 class UsersController
 {
 	// Start Coding!
+
 }

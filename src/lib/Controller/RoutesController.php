@@ -85,6 +85,7 @@ class RoutesController
 					$action = trim(str_replace('public function ', '', $match));
 					if ($action != '__construct') {
 						$this->actions[$controller][] = $action;
+						$this->setPrimaryRoutes($controller, $action);
 					}
 				} // end of inner foreach lopp
 				fclose($file_to_read);
@@ -92,6 +93,19 @@ class RoutesController
 		} catch (Exception $e) {
 			echo '<h3>Oh man got this error -> </h3>' . $e->getMessage();
 		}
+	}
+
+	/**
+	 * Set routes based from created controller classes
+	 *
+	 * @param $controller string the controller class to use
+	 * @param $action string public function of the controller
+	 */
+	private function setPrimaryRoutes(string $controller, string $action)
+	{
+		$url = ($action != 'index') ? "/{$controller}/{$action}":"/{$controller}";
+		$view = '/'.ucfirst($controller)."/{$action}";
+		$this->route[$url] = $view;
 	}
 
 	/**
@@ -115,8 +129,17 @@ class RoutesController
 	public function requireRoute(string $url)
 	{
 		require_once("app/View/Common/{$this->viewTemplateSetting->getHeader()}");
+		if (preg_match('/\/$/', $url) && strlen($url) > 1) {
+			$url = rtrim($url, "/");
+		}
 		if (isset($this->route[$url])) {
-			require_once('app/View' . $this->route[$url] . '.php');
+			$file = 'app/View' . $this->route[$url] . '.php';
+			if (file_exists($file)) {
+				require_once($file);
+			} else {
+				echo '<h3 class="text-center">File '. $file . 
+				' does not exist man. Create one if you like!</h3>';
+			}
 		} else {
 			echo '<div class="col-md-4 offset-md-4 text-center">'.
 				  '<h2>WAZZAP MAN!!!</h2>'.
