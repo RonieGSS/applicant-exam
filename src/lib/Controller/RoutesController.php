@@ -92,7 +92,7 @@ class RoutesController
 					$this->actions[$controller][] = $action;
 					$this->setPrimaryRoutes($controller, $action);
 				}
-			} // end of inner foreach lopp
+			} // end of foreach lopp
 			fclose($file_to_read);
 		} catch (Exception $e) {
 			echo '<h3>Oh man got this error -> </h3>' . $e->getMessage();
